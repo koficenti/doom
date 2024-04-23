@@ -1,30 +1,17 @@
-import { Label, Button, ButtonProps, Container } from "./src/DoomComponent";
+import { Route, Label, Button, Container } from "./src/DoomComponent";
+import DoomServer from "./src/DoomServer";
 
-const CustomButton = (
-    text: string,
-    props: Omit<ButtonProps, 'child'>
-) => {
-    return Button({
-        child: Label({text: text}),
-        onclick: props.onclick,
-        style: { color: "purple" }
+Route({ path: "/", component: Label({ text: "Hello world!" }) })
+
+Route({
+    path: "/other",
+    component: Container({
+        children: [
+            Label({ text: "Hello world!" }),
+            Label({ text: "Hello world!" }),
+            Label({ text: "Hello world!" }),        
+        ]
     })
-}
+})
 
-const Page = Container({
-    children: [
-        CustomButton("Hello World", {
-            onclick: () => {
-                console.log("Button says 'Hello world!'")
-            },
-        }),
-        CustomButton("Another Button!", {
-            onclick: () => {
-                console.log("Button says 'Another Button!'")
-            },
-        }),
-    ]
-});
-
-// Hmm so far so good maybe?
-console.log(Page.render!())
+DoomServer.begin()

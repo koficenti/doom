@@ -1,12 +1,14 @@
 import "crypto"
 import { DoomHTMLAnchorElement, DoomHTMLButtonElement, DoomHTMLDivElement, DoomHTMLElement } from "./DoomHTML"
 import { Style } from "./DoomStyle"
+import DoomServer from "./DoomServer"
 
 export enum ComponentKind {
     Container,
     Margin,
     Button,
     Label,
+    Route,
 }
 
 export type Base = {
@@ -76,5 +78,19 @@ export const Label: Composite<Component<unknown>, Component<LabelProps>> = (prop
             label.attributes["id"] = this.id!;
             return label;
         }
+    }
+}
+
+
+export type RouteProps = { path: string, component: Component<unknown> }
+export const Route: Composite<Component<unknown>, Component<RouteProps>> = (props) => {
+    const { path, component } = props as RouteProps;
+
+    DoomServer.route(path, component);
+
+    return {
+        kind: ComponentKind.Route,
+        path,
+        component
     }
 }
